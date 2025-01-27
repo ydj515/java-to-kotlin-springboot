@@ -4,8 +4,9 @@ import com.makers.princemaker.code.StatusCode;
 import com.makers.princemaker.entity.Prince;
 import com.makers.princemaker.type.PrinceLevel;
 import com.makers.princemaker.type.SkillType;
-import com.makers.princemaker.util.DateTimeUtils;
 import lombok.*;
+
+import static com.makers.princemaker.util.DateTimeUtilsKt.getLocalDateTimeString;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class PrinceDetailDto {
                 .name(prince.getName())
                 .age(prince.getAge())
                 .status(prince.getStatus())
-                .birthDate(DateTimeUtils.getLocalDateTimeString(prince.getCreatedAt()))
+                .birthDate(getLocalDateTimeString(prince.getCreatedAt()))
                 .build();
     }
 }
