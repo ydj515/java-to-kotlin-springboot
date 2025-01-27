@@ -1,67 +1,51 @@
-package com.makers.princemaker.dto;
+package com.makers.princemaker.dto
 
-import com.makers.princemaker.entity.Prince;
-import com.makers.princemaker.type.PrinceLevel;
-import com.makers.princemaker.type.SkillType;
-import lombok.*;
+import com.makers.princemaker.entity.Prince
+import com.makers.princemaker.type.PrinceLevel
+import com.makers.princemaker.type.SkillType
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+class CreatePrince {
 
-public class CreatePrince {
+    data class Request(
+        // @@Valid에 어노테이션 적용 타겟(Annotation use-site target) 사용 필요
+        @field:NotNull
+        val princeLevel: PrinceLevel? = null,
+        @field:NotNull
+        val skillType: SkillType? = null,
+        @field:NotNull @field:Min(0)
+        val experienceYears: Int? = null,
+        @field:NotNull @field:Size(min = 3, max = 50, message = "invalid princeId")
+        val princeId: String? = null,
+        @field:NotNull @field:Size(min = 2, max = 50, message = "invalid name")
+        val name: String? = null,
+        @field:NotNull @field:Min(18)
+        val age: Int? = null,
+    )
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Request {
-        @NotNull
-        private PrinceLevel princeLevel;
+    class Response(
+        val princeLevel: PrinceLevel? = null,
+        val skillType: SkillType? = null,
+        val experienceYears: Int? = null,
+        val princeId: String? = null,
+        val name: String? = null,
+        val age: Int? = null,
+    ) {
 
-        @NotNull
-        private SkillType skillType;
-
-        @NotNull
-        @Min(0)
-        private Integer experienceYears;
-
-        @NotNull
-        @Size(min = 3, max = 50, message = "invalid princeId")
-        private String princeId;
-
-        @NotNull
-        @Size(min = 2, max = 50, message = "invalid name")
-        private String name;
-
-        @NotNull
-        @Min(18)
-        private Integer age;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response {
-        private PrinceLevel princeLevel;
-        private SkillType skillType;
-        private Integer experienceYears;
-        private String princeId;
-        private String name;
-        private Integer age;
-
-        public static Response fromEntity(Prince prince) {
-            return Response.builder()
-                    .princeLevel(prince.getPrinceLevel())
-                    .skillType(prince.getSkillType())
-                    .experienceYears(prince.getExperienceYears())
-                    .princeId(prince.getPrinceId())
-                    .name(prince.getName())
-                    .age(prince.getAge())
-                    .build();
+        companion object {
+            @JvmStatic
+            fun fromEntity(prince: Prince): Response {
+                return Response(
+                    princeLevel = prince.princeLevel,
+                    skillType = prince.skillType,
+                    experienceYears = prince.experienceYears,
+                    princeId = prince.princeId,
+                    name = prince.name,
+                    age = prince.age,
+                )
+            }
         }
     }
 }
