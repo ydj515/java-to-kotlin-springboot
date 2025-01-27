@@ -2,7 +2,6 @@ package com.makers.princemaker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.makers.princemaker.code.PrinceMakerErrorCode;
-import com.makers.princemaker.dto.CreatePrince;
 import com.makers.princemaker.dto.PrinceDto;
 import com.makers.princemaker.exception.PrinceMakerException;
 import com.makers.princemaker.service.PrinceMakerService;
@@ -28,7 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PrinceMakerController.class)
+@WebMvcTest(controllers = {
+        PrinceMakerController.class,
+        CreatePriceController.class,
+})
 @MockBean(JpaMetamodelMappingContext.class)
 class PrinceMakerControllerTest {
     @Autowired
@@ -37,7 +39,7 @@ class PrinceMakerControllerTest {
     @MockBean
     private PrinceMakerService princeMakerService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     protected MediaType contentType =
             new MediaType(MediaType.APPLICATION_JSON.getType(),
