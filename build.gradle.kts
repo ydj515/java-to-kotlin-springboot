@@ -42,6 +42,10 @@ dependencies {
     val querydslVersion = "5.0.0"
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+
+    // test
+    val mockkVersion = "1.13.12"
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }
 kapt {
     keepJavacAnnotationProcessors = true
