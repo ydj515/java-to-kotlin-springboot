@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 fun dummyPrince(
     id: Long? = 1L,
     name: String = "name",
-    princeLevel: PrinceLevel = PrinceLevel.BABY_PRINCE,
-    skillType: SkillType = SkillType.WARRIOR,
+    princeLevel: PrinceLevel = PrinceLevel.JUNIOR_PRINCE,
+    skillType: SkillType = SkillType.INTELLECTUAL,
     status: StatusCode = StatusCode.HEALTHY,
     experienceYears: Int = 23,
     princeId: String = "princeId",

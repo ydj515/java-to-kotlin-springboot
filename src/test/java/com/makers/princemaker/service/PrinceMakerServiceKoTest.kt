@@ -2,8 +2,9 @@ package com.makers.princemaker.service
 
 import com.makers.princemaker.code.PrinceMakerErrorCode
 import com.makers.princemaker.constant.PrinceMakerConstant
-import com.makers.princemaker.controller.CreatePrince
+import com.makers.princemaker.dto.dummyCreatePrinceRequest
 import com.makers.princemaker.entity.PrinceMock
+import com.makers.princemaker.entity.dummyPrince
 import com.makers.princemaker.exception.PrinceMakerException
 import com.makers.princemaker.repository.PrinceRepository
 import com.makers.princemaker.repository.WoundedPrinceRepository
@@ -24,20 +25,14 @@ class PrinceMakerServiceKoTest : BehaviorSpec({
     val princeMakerService = PrinceMakerService(princeRepository, woundedPriceRepository)
 
     Given("프린스 생성을 진행할 때") {
-        val request = CreatePrince.Request(
-            PrinceLevel.JUNIOR_PRINCE,
-            SkillType.INTELLECTUAL,
-            3,
-            "princeId",
-            "name",
-            28
+        val request = dummyCreatePrinceRequest().copy(
+            experienceYears = 3,
+            skillType = SkillType.INTELLECTUAL,
+            princeLevel = PrinceLevel.JUNIOR_PRINCE,
         )
-        val juniorPrince = PrinceMock.createPrince(
-            PrinceLevel.JUNIOR_PRINCE,
-            SkillType.INTELLECTUAL,
-            PrinceMakerConstant.MAX_JUNIOR_EXPERIENCE_YEARS,
-            "princeId"
-        )
+
+        val juniorPrince = dummyPrince()
+
         every {
             princeRepository.save(any())
         } returns juniorPrince
