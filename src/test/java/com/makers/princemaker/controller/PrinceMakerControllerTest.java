@@ -57,7 +57,7 @@ class PrinceMakerControllerTest {
                 .princeLevel(PrinceLevel.JUNIOR_PRINCE)
                 .princeId("princeId2")
                 .build();
-        given(princeMakerService.getAllPrince())
+        given(princeMakerService.getPrinces())
                 .willReturn(Arrays.asList(warriorKing, intellectualJuniorPrince));
 
         //when
@@ -141,7 +141,7 @@ class PrinceMakerControllerTest {
     @Test
     void testErrorMessage() throws Exception {
         //given
-        given(princeMakerService.getAllPrince())
+        given(princeMakerService.getPrinces())
                 .willThrow(new PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE));
 
         //when
