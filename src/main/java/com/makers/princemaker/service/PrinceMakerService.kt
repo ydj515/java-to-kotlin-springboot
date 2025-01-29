@@ -27,7 +27,7 @@ class PrinceMakerService(
     fun createPrince(request: CreatePrince.Request): CreatePrince.Response {
         validateCreatePrinceRequest(request)
 
-        val prince = Prince(
+        return Prince(
             null,
             request.princeLevel!!,
             request.skillType!!,
@@ -36,10 +36,11 @@ class PrinceMakerService(
             request.princeId!!,
             request.name!!,
             request.age!!,
-            null, null
-        )
-        princeRepository.save(prince)
-        return prince.toCreatePrinceResponse()
+            null,
+            null,
+        ).also {
+            princeRepository.save(it)
+        }.toCreatePrinceResponse()
     }
 
     private fun validateCreatePrinceRequest(request: CreatePrince.Request) {
@@ -76,7 +77,8 @@ class PrinceMakerService(
 
     @Transactional
     fun getPrince(princeId: String): PrinceDetailDto {
-        return princeRepository.findByPrinceId(princeId)?.let { prince: Prince -> PrinceDetailDto.fromEntity(prince) }
+        return princeRepository.findByPrinceId(princeId)
+            ?.let { PrinceDetailDto.fromEntity(it) }
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
     }
 
@@ -88,11 +90,14 @@ class PrinceMakerService(
         val prince = princeRepository.findByPrinceId(princeId)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
 
-        prince.princeLevel = request.princeLevel
-        prince.skillType = request.skillType
-        prince.experienceYears = request.experienceYears
-        prince.name = request.name
-        prince.age = request.age
+        prince.apply {
+            princeLevel = request.princeLevel
+            skillType = request.skillType
+            experienceYears = request.experienceYears
+            name = request.name
+            age = request.age
+        }
+
 
         return PrinceDetailDto.fromEntity(prince)
     }
@@ -104,14 +109,17 @@ class PrinceMakerService(
         val prince = princeRepository.findByPrinceId(princeId)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
 
+        // 굳이 with절이 필요 없긴함.
+        with(prince) {
+            this.status = StatusCode.WOUNDED
 
-        prince.status = StatusCode.WOUNDED
-
-        val woundedPrince = WoundedPrince.builder()
-            .princeId(prince.princeId)
-            .name(prince.name)
-            .build()
-        woundedPrinceRepository.save(woundedPrince)
-        return PrinceDetailDto.fromEntity(prince)
+            WoundedPrince.builder()
+                .princeId(this.princeId)
+                .name(this.name)
+                .build().also {
+                    woundedPrinceRepository.save(it)
+                }
+            return PrinceDetailDto.fromEntity(prince)
+        }
     }
 }
