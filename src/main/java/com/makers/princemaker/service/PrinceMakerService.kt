@@ -8,6 +8,7 @@ import com.makers.princemaker.controller.toCreatePrinceResponse
 import com.makers.princemaker.dto.EditPrince
 import com.makers.princemaker.dto.PrinceDetailDto
 import com.makers.princemaker.dto.PrinceDto
+import com.makers.princemaker.dto.toPrinceDetailDto
 import com.makers.princemaker.entity.Prince
 import com.makers.princemaker.entity.WoundedPrince
 import com.makers.princemaker.exception.PrinceMakerException
@@ -77,8 +78,7 @@ class PrinceMakerService(
 
     @Transactional
     fun getPrince(princeId: String): PrinceDetailDto {
-        return princeRepository.findByPrinceId(princeId)
-            ?.let { PrinceDetailDto.fromEntity(it) }
+        return princeRepository.findByPrinceId(princeId)?.toPrinceDetailDto()
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
     }
 
@@ -90,16 +90,14 @@ class PrinceMakerService(
         val prince = princeRepository.findByPrinceId(princeId)
             ?: throw PrinceMakerException(PrinceMakerErrorCode.NO_SUCH_PRINCE)
 
-        prince.apply {
+        return prince.apply {
             princeLevel = request.princeLevel
             skillType = request.skillType
             experienceYears = request.experienceYears
             name = request.name
             age = request.age
-        }
+        }.toPrinceDetailDto()
 
-
-        return PrinceDetailDto.fromEntity(prince)
     }
 
     @Transactional
@@ -119,7 +117,7 @@ class PrinceMakerService(
                 .build().also {
                     woundedPrinceRepository.save(it)
                 }
-            return PrinceDetailDto.fromEntity(prince)
+            return this.toPrinceDetailDto()
         }
     }
 }

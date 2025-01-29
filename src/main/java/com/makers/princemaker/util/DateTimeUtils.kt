@@ -9,3 +9,7 @@ fun getLocalDateTimeString(localDateTime: LocalDateTime): String {
             .ofPattern("yyyy-MM-dd 탄생")
     )
 }
+
+fun LocalDateTime.toBirthDayString(): String = this.format(
+    DateTimeFormatter.ofPattern("yyyy-MM-dd 탄생")
+)

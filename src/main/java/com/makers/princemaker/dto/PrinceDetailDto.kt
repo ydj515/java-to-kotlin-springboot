@@ -1,38 +1,31 @@
-package com.makers.princemaker.dto;
+package com.makers.princemaker.dto
 
-import com.makers.princemaker.code.StatusCode;
-import com.makers.princemaker.entity.Prince;
-import com.makers.princemaker.type.PrinceLevel;
-import com.makers.princemaker.type.SkillType;
-import lombok.*;
+import com.makers.princemaker.code.StatusCode
+import com.makers.princemaker.entity.Prince
+import com.makers.princemaker.type.PrinceLevel
+import com.makers.princemaker.type.SkillType
+import com.makers.princemaker.util.toBirthDayString
 
-import static com.makers.princemaker.util.DateTimeUtilsKt.getLocalDateTimeString;
+data class PrinceDetailDto(
+    val princeLevel: PrinceLevel,
+    val skillType: SkillType,
+    val experienceYears: Int,
+    val princeId: String,
+    val name: String,
+    val age: Int,
+    val status: StatusCode,
+    val birthDate: String,
+)
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class PrinceDetailDto {
-    private PrinceLevel princeLevel;
-    private SkillType skillType;
-    private Integer experienceYears;
-    private String princeId;
-    private String name;
-    private Integer age;
-    private StatusCode status;
-    private String birthDate;
-
-    public static PrinceDetailDto fromEntity(Prince prince) {
-        return PrinceDetailDto.builder()
-                .princeLevel(prince.getPrinceLevel())
-                .skillType(prince.getSkillType())
-                .experienceYears(prince.getExperienceYears())
-                .princeId(prince.getPrinceId())
-                .name(prince.getName())
-                .age(prince.getAge())
-                .status(prince.getStatus())
-                .birthDate(getLocalDateTimeString(prince.getCreatedAt()))
-                .build();
-    }
+fun Prince.toPrinceDetailDto(): PrinceDetailDto {
+    return PrinceDetailDto(
+        princeLevel = this.princeLevel,
+        skillType = this.skillType,
+        experienceYears = this.experienceYears!!,
+        princeId = this.princeId,
+        name = this.name,
+        age = this.age,
+        status = this.status!!,
+        birthDate = this.createdAt!!.toBirthDayString(),
+    )
 }
