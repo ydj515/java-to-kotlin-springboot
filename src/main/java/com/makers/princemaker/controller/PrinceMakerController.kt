@@ -30,20 +30,20 @@ class PrinceMakerController(
     }
 
     @GetMapping("/{princeId}")
-    fun getPrince(@PathVariable princeId: String?): PrinceDetailDto {
+    fun getPrince(@PathVariable princeId: String): PrinceDetailDto {
         return princeMakerService.getPrince(princeId)
     }
 
     @PutMapping("/{princeId}")
     fun updatePrince(
-        @PathVariable princeId: String?,
+        @PathVariable princeId: String,
         @Valid @RequestBody request: EditPrince.Request
     ): PrinceDetailDto {
         return princeMakerService.editPrince(princeId, request)
     }
 
     @DeleteMapping("/{princeId}")
-    fun deletePrince(@PathVariable princeId: String?): PrinceDetailDto {
+    fun deletePrince(@PathVariable princeId: String): PrinceDetailDto {
         return princeMakerService.woundPrince(princeId)
     }
 }

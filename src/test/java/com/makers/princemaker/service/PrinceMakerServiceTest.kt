@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
-import java.util.Optional
 
 @ExtendWith(MockKExtension::class)
 internal class PrinceMakerServiceTest {
@@ -48,7 +47,7 @@ internal class PrinceMakerServiceTest {
         )
         every {
             princeRepository.findByPrinceId(any())
-        } returns Optional.of(juniorPrince)
+        } returns juniorPrince
 
         //when
         val prince = princeMakerService.getPrince("princeId")
@@ -67,6 +66,10 @@ internal class PrinceMakerServiceTest {
             skillType = SkillType.INTELLECTUAL,
             princeLevel = PrinceLevel.MIDDLE_PRINCE,
         )
+
+        every {
+            princeRepository.findByPrinceId(any())
+        } returns null
 
         val slot = slot<Prince>()
 
@@ -122,7 +125,7 @@ internal class PrinceMakerServiceTest {
         )
         every {
             princeRepository.findByPrinceId(any())
-        } returns Optional.of(juniorPrince)
+        } returns juniorPrince
 
         //when
         val exception =
@@ -143,8 +146,8 @@ internal class PrinceMakerServiceTest {
             28
         )
         every {
-            princeRepository.findByPrinceId(ArgumentMatchers.anyString())
-        } returns Optional.empty()
+            princeRepository.findByPrinceId(any())
+        } returns null
 
         //when
         val exception =

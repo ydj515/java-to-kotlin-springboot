@@ -1,9 +1,7 @@
 package com.makers.princemaker.service
 
 import com.makers.princemaker.code.PrinceMakerErrorCode
-import com.makers.princemaker.constant.PrinceMakerConstant
 import com.makers.princemaker.dto.dummyCreatePrinceRequest
-import com.makers.princemaker.entity.PrinceMock
 import com.makers.princemaker.entity.dummyPrince
 import com.makers.princemaker.exception.PrinceMakerException
 import com.makers.princemaker.repository.PrinceRepository
@@ -16,7 +14,6 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import java.util.Optional
 
 class PrinceMakerServiceKoTest : BehaviorSpec({
 
@@ -40,7 +37,7 @@ class PrinceMakerServiceKoTest : BehaviorSpec({
         When("priceId가 중복되지않고 정상 요청이 오면") {
             every {
                 princeRepository.findByPrinceId(any())
-            } returns Optional.empty()
+            } returns null
 
             val result = princeMakerService.createPrince(request)
 
@@ -57,7 +54,7 @@ class PrinceMakerServiceKoTest : BehaviorSpec({
 
             every {
                 princeRepository.findByPrinceId(any())
-            } returns Optional.of(juniorPrince)
+            } returns juniorPrince
 
             val exception = shouldThrow<PrinceMakerException> {
                 princeMakerService.createPrince(request)
